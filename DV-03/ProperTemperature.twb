@@ -1,0 +1,244 @@
+<?xml version='1.0' encoding='utf-8' ?>
+
+<!-- build 10300.17.0728.2252                               -->
+<workbook original-version='10.3' source-build='10.3.2 (10300.17.0728.2252)' source-platform='win' version='10.3' xmlns:user='http://www.tableausoftware.com/xml/user'>
+  <preferences>
+    <preference name='ui.encoding.shelf.height' value='24' />
+    <preference name='ui.shelf.height' value='26' />
+  </preferences>
+  <datasources>
+    <datasource caption='Blad1 (tempData)' inline='true' name='federated.0pj904r1st1gja114ukqi1q8ujvn' version='10.3'>
+      <connection class='federated'>
+        <named-connections>
+          <named-connection caption='tempData' name='excel-direct.1cten6o138ee6917zo4ho0s5w37c'>
+            <connection class='excel-direct' cleaning='no' compat='no' dataRefreshTime='' filename='D:/Fontys/ADS/DV/repo/DV-03/tempData.xlsx' interpretationMode='0' password='' server='' validate='no' />
+          </named-connection>
+        </named-connections>
+        <relation connection='excel-direct.1cten6o138ee6917zo4ho0s5w37c' name='Blad1' table='[Blad1$]' type='table'>
+          <columns gridOrigin='A1:B8:no:A1:B8:0' header='no' outcome='6'>
+            <column datatype='datetime' name='F1' ordinal='0' />
+            <column datatype='integer' name='F2' ordinal='1' />
+          </columns>
+        </relation>
+        <metadata-records>
+          <metadata-record class='column'>
+            <remote-name>F1</remote-name>
+            <remote-type>7</remote-type>
+            <local-name>[F1]</local-name>
+            <parent-name>[Blad1]</parent-name>
+            <remote-alias>F1</remote-alias>
+            <ordinal>0</ordinal>
+            <local-type>datetime</local-type>
+            <aggregation>Year</aggregation>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;DATE&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>F2</remote-name>
+            <remote-type>20</remote-type>
+            <local-name>[F2]</local-name>
+            <parent-name>[Blad1]</parent-name>
+            <remote-alias>F2</remote-alias>
+            <ordinal>1</ordinal>
+            <local-type>integer</local-type>
+            <aggregation>Sum</aggregation>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;I8&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='capability'>
+            <remote-name />
+            <remote-type>0</remote-type>
+            <parent-name>[Blad1]</parent-name>
+            <remote-alias />
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='integer' name='context'>2</attribute>
+              <attribute datatype='string' name='gridOrigin'>&quot;A1:B8:no:A1:B8:0&quot;</attribute>
+              <attribute datatype='boolean' name='header'>false</attribute>
+              <attribute datatype='integer' name='outcome'>6</attribute>
+            </attributes>
+          </metadata-record>
+        </metadata-records>
+      </connection>
+      <column datatype='integer' name='[Number of Records]' role='measure' type='quantitative' user:auto-column='numrec'>
+        <calculation class='tableau' formula='1' />
+      </column>
+      <layout dim-ordering='alphabetic' dim-percentage='0.487562' measure-ordering='alphabetic' measure-percentage='0.512438' show-structure='true' />
+      <semantic-values>
+        <semantic-value key='[Country].[Name]' value='&quot;Netherlands&quot;' />
+      </semantic-values>
+    </datasource>
+  </datasources>
+  <worksheets>
+    <worksheet name='temperature'>
+      <table>
+        <view>
+          <datasources>
+            <datasource caption='Blad1 (tempData)' name='federated.0pj904r1st1gja114ukqi1q8ujvn' />
+          </datasources>
+          <datasource-dependencies datasource='federated.0pj904r1st1gja114ukqi1q8ujvn'>
+            <column datatype='datetime' name='[F1]' role='dimension' type='ordinal' />
+            <column datatype='integer' name='[F2]' role='measure' type='quantitative' />
+            <column-instance column='[F1]' derivation='Hour' name='[hr:F1:qk]' pivot='key' type='quantitative' />
+            <column-instance column='[F2]' derivation='Sum' name='[sum:F2:qk]' pivot='key' type='quantitative' />
+          </datasource-dependencies>
+          <filter class='quantitative' column='[federated.0pj904r1st1gja114ukqi1q8ujvn].[hr:F1:qk]' included-values='non-null' />
+          <slices>
+            <column>[federated.0pj904r1st1gja114ukqi1q8ujvn].[hr:F1:qk]</column>
+          </slices>
+          <aggregation value='true' />
+        </view>
+        <style>
+          <style-rule element='axis'>
+            <encoding attr='space' class='0' domain-expand='false' field='[federated.0pj904r1st1gja114ukqi1q8ujvn].[sum:F2:qk]' field-type='quantitative' max='105' min='62' range-type='fixed' scope='rows' type='space' />
+            <format attr='subtitle' class='0' field='[federated.0pj904r1st1gja114ukqi1q8ujvn].[sum:F2:qk]' scope='rows' value='' />
+            <format attr='auto-subtitle' class='0' field='[federated.0pj904r1st1gja114ukqi1q8ujvn].[sum:F2:qk]' scope='rows' value='true' />
+            <encoding attr='space' class='0' field='[federated.0pj904r1st1gja114ukqi1q8ujvn].[hr:F1:qk]' field-type='quantitative' major-origin='0' major-spacing='1' max='17' min='7' range-type='fixed' scope='cols' type='space' />
+            <format attr='subtitle' class='0' field='[federated.0pj904r1st1gja114ukqi1q8ujvn].[hr:F1:qk]' scope='cols' value='' />
+            <format attr='auto-subtitle' class='0' field='[federated.0pj904r1st1gja114ukqi1q8ujvn].[hr:F1:qk]' scope='cols' value='true' />
+            <format attr='title' class='0' field='[federated.0pj904r1st1gja114ukqi1q8ujvn].[sum:F2:qk]' scope='rows' value='Temperature in fahrenheit' />
+            <format attr='title' class='0' field='[federated.0pj904r1st1gja114ukqi1q8ujvn].[hr:F1:qk]' scope='cols' value='Hour' />
+          </style-rule>
+        </style>
+        <panes>
+          <pane id='1' selection-relaxation-option='selection-relaxation-allow'>
+            <view>
+              <breakdown value='auto' />
+            </view>
+            <mark class='Automatic' />
+            <encodings>
+              <text column='[federated.0pj904r1st1gja114ukqi1q8ujvn].[sum:F2:qk]' />
+            </encodings>
+            <customized-tooltip>
+              <formatted-text>
+                <run fontcolor='#787878'>F2:&#9;</run>
+                <run bold='true'>&lt;[federated.0pj904r1st1gja114ukqi1q8ujvn].[sum:F2:qk]&gt;</run>
+              </formatted-text>
+            </customized-tooltip>
+            <style>
+              <style-rule element='mark'>
+                <format attr='mark-markers-mode' value='all' />
+                <format attr='mark-labels-show' value='true' />
+              </style-rule>
+            </style>
+          </pane>
+        </panes>
+        <rows>[federated.0pj904r1st1gja114ukqi1q8ujvn].[sum:F2:qk]</rows>
+        <cols>[federated.0pj904r1st1gja114ukqi1q8ujvn].[hr:F1:qk]</cols>
+      </table>
+    </worksheet>
+  </worksheets>
+  <windows source-height='30'>
+    <window class='worksheet' maximized='true' name='temperature'>
+      <cards>
+        <edge name='left'>
+          <strip size='160'>
+            <card type='pages' />
+            <card type='filters' />
+            <card type='marks' />
+          </strip>
+        </edge>
+        <edge name='top'>
+          <strip size='2147483647'>
+            <card type='columns' />
+          </strip>
+          <strip size='2147483647'>
+            <card type='rows' />
+          </strip>
+          <strip size='31'>
+            <card type='title' />
+          </strip>
+        </edge>
+      </cards>
+      <viewpoint>
+        <highlight>
+          <color-one-way>
+            <field>[federated.0pj904r1st1gja114ukqi1q8ujvn].[:Measure Names]</field>
+            <field>[federated.0pj904r1st1gja114ukqi1q8ujvn].[yr:F1:ok]</field>
+          </color-one-way>
+        </highlight>
+      </viewpoint>
+    </window>
+  </windows>
+  <thumbnails>
+    <thumbnail height='192' name='temperature' width='192'>
+      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
+    </thumbnail>
+  </thumbnails>
+</workbook>
