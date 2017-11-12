@@ -3,69 +3,31 @@
     <script src="https://unpkg.com/event-drops"></script>
 </head>
 
+<div style="text-align: center" id="legend"></div>
+
 <div id="chart_placeholder"></div>
 <script>
-
-    var defaultConfig = {
-        start: new Date(0),
-        end: new Date(),
-        minScale: 0,
-        maxScale: Infinity,
-        width: 1000,
-        margin: {
-            top: 60,
-            left: 200,
-            bottom: 40,
-            right: 50
-        },
-        locale: null,
-        axisFormat: null,
-        tickFormat: [
-            [".%L", function (d) {
-                return d.getMilliseconds();
-            }],
-            [":%S", function (d) {
-                return d.getSeconds();
-            }],
-            ["%I:%M", function (d) {
-                return d.getMinutes();
-            }],
-            ["%I %p", function (d) {
-                return d.getHours();
-            }],
-            ["%a %d", function (d) {
-                return d.getDay() && d.getDate() != 1;
-            }],
-            ["%b %d", function (d) {
-                return d.getDate() != 1;
-            }],
-            ["%B", function (d) {
-                return d.getMonth();
-            }],
-            ["%Y", function () {
-                return true;
-            }]
-        ],
-        eventHover: null,
-        eventZoom: null,
-        eventClick: null,
-        hasDelimiter: true,
-        hasTopAxis: true,
-        hasBottomAxis: function (data) {
-            return data.length >= 10;
-        },
-        eventLineColor: 'black',
-        eventColor: null
-    };
-
     var data = [
         {
-            name: "Assault",
-            data: [{date: new Date('2014/09/15 13:24:54')}, {date: new Date('2014/09/15 13:33:03')}, {date: new Date('2014/09/15 13:45:05')}]
+            name: "Robbery",
+            data: [{date: new Date('2014/09/15 13:24:57')}, {date: new Date('2014/09/15 13:27:04')}, {date: new Date('2014/09/15 13:30:04')}],
+            color: "black"
         },
         {
-            name: "Robery",
-            data: [{date: new Date('2014/09/15 13:24:57')}, {date: new Date('2014/09/15 13:27:04')}, {date: new Date('2014/09/15 13:30:04')}]
+            name: "Assault",
+            data: [{date: new Date('2014/09/15 13:24:54')}, {date: new Date('2014/09/15 13:33:03')}, {date: new Date('2014/09/15 13:45:05')}],
+            color: "crimson"
+        },
+
+        {
+            name: "Larceny",
+            data: [{date: new Date('2014/09/15 13:20:57')}, {date: new Date('2014/09/15 13:22:57')}],
+            color: "purple"
+        },
+        {
+            name: "Shooting",
+            data: [{date: new Date('2014/09/15 13:50:57')}, {date: new Date('2014/09/15 13:59:57')}],
+            color: "red"
         }
     ];
 
@@ -75,11 +37,10 @@
         .end(new Date('2014/09/15 13:45:05'))
         .minScale(0.05)
         .maxScale(1000)
-
         .eventLineColor(function (e) {
             console.log(e);
             return e.color;
-        })
+        });
 
 
     d3.select('#chart_placeholder')
