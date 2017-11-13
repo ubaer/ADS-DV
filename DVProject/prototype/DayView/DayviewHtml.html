@@ -43,10 +43,11 @@
         .end(new Date('2014/09/15 13:45:05'))
         .minScale(0.05)
         .maxScale(1000)
-        .eventLineColor(function (e) {
+        .eventLineColor(function(e){
             console.log(e);
             return e.color;
-        });
+        })
+        ;
 
 
     d3.select('#chart_placeholder')
