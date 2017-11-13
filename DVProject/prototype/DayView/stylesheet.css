@@ -1,0 +1,15 @@
+body {
+    font-family: verdana, sans-serif;
+}
+.zoom {
+    fill: transparent;
+    cursor: pointer;
+}
+.y-axis g line {
+    stroke: grey;
+    fill: none;
+    stroke-width: 1px;
+}
+.graph-body .line circle {
+    opacity: 0.1;
+}

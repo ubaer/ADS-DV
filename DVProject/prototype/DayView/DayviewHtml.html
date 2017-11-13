@@ -1,6 +1,8 @@
 <head>
     <script src="https://d3js.org/d3.v4.min.js"></script>
     <script src="https://unpkg.com/event-drops"></script>
+    <link rel="stylesheet" type="text/css" href="stylesheet.css">
+
 </head>
 
 <div style="text-align: center" id="legend"></div>
@@ -32,6 +34,10 @@
     ];
 
     var eventDropsChart = d3.chart.eventDrops();
+
+    function stuff() {
+        console.log("asdf")
+    }
 
     eventDropsChart.start(new Date('2014/09/15 13:24:54'))
         .end(new Date('2014/09/15 13:45:05'))
