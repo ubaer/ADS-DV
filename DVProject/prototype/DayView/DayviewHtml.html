@@ -1,6 +1,8 @@
 <head>
     <script src="https://d3js.org/d3.v4.min.js"></script>
     <script src="https://unpkg.com/event-drops"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.2/moment.js"></script>
+
     <link rel="stylesheet" type="text/css" href="stylesheet.css">
 
 </head>
@@ -9,6 +11,7 @@
 
 <div id="chart_placeholder"></div>
 <script>
+    /*
     var data = [
         {
             name: "Robbery",
@@ -32,30 +35,90 @@
             color: "red"
         }
     ];
+*/
 
-    var eventDropsChart = d3.chart.eventDrops();
+    /* ditc = {
+        'Robbery': {
+        data: []
+        }
+       }
 
-    function listener(d) {
-        console.log(d)
-    }
+*/
+    //    var parse = d3.time.format("%mm/%dd/%YYYY").parse;
 
-    eventDropsChart.start(new Date('2014/09/15 13:24:54'))
-        .end(new Date('2014/09/15 13:45:05'))
-        .click((d) => listener(d))
-        .minScale(0.05)
-        .maxScale(1000)
-        .eventLineColor(function(e){
-            console.log(e);
-            return e.color;
-        })
-    ;
+    var colors = {
+        'AUTO THEFT': '#4853e5',
+        'SHOOTING': '#b50f0b',
+        'AGG. ASSAULT': '#e59ca3',
+        'COMMON ASSAULT': '#e8cdce',
+        'BURGLARY': '#5d6b6d',
+        'HOMICIDE': '#ff191e',
+        'ROBBERY - STREET': '#afe570',
+        'LARCENY': '#a86b23',
+        'RAPE': '#e500c0',
+    };
+
+    var unwanted = [
+        'ROBBERY - RESIDENCE',
+        'ARSON',
+        'ROBBERY - COMMERCIAL',
+        'ROBBERY - CARJACKING',
+        'ASSAULT BY THREAT',
+        'LARCENY FROM AUTO'
+    ];
+
+    var data;
+    d3.csv("2017.csv", function (prices) {
+        var dict = {};
+        data = prices.map(function (d) {
+            return {
+                date: moment(d.date + " " + d.CrimeTime, 'MM/DD/YYYY HH:mm:ss').toDate(),
+                crimeTime: d.CrimeTime,
+                crimeCode: d.CrimeCode,
+                location: d.Location,
+                description: d.Description
+            };
+        });
+
+        data.forEach(function (record) {
+            if(unwanted.includes(record.description)) {
+                return;
+            }
+            if (!dict.hasOwnProperty(record.description)) {
+                dict[record.description] = {
+                    data: []
+                };
+            }
+            dict[record.description].data.push(record);
+        });
 
 
-    d3.select('#chart_placeholder')
-        .datum(data)
-        .call(eventDropsChart);
+        var newDict = Object.entries(dict).map(function (entry) {
+            return {
+                name: entry[0],
+                data: entry[1].data,
+                color: colors[entry[0]]
+            };
+        });
 
+
+        var eventDropsChart = d3.chart.eventDrops();
+
+        function listener(d) {
+            console.log(d)
+        }
+
+        eventDropsChart.start(new Date('2017/04/15 10:24:54'))
+            .end(new Date('2017/04/15 13:45:05'))
+            .click((d) => listener(d))
+            .minScale(0.05)
+            .maxScale(1000)
+            .eventLineColor(function (e) {
+                return e.color;
+            });
+
+        d3.select('#chart_placeholder')
+            .datum(newDict)
+            .call(eventDropsChart);
+    })
 </script>
-
-#https://jsfiddle.net/k68brcjv/
-#https://marmelab.com/EventDrops/
