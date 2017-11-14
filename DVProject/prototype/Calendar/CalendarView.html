@@ -1,11 +1,11 @@
 <head>
     <link rel="stylesheet" type="text/css" href="stylesheet.css">
-    <script src="https://d3js.org/d3.v3.js"></script>
 </head>
 <!DOCTYPE html>
 <body>
 <H>Crime in Baltamore</H>
 <br>
+<script src="https://d3js.org/d3.v3.js"></script>
 <script>
 
     var width = 960,
@@ -67,10 +67,10 @@
 
         var data = d3.nest()
             .key(function (d) {
-                return d.CrimeDate;
+                return d.date;
             })
             .rollup(function (d) {
-                return (d[0].Description);
+                return (d[0].incidents);
             })
             .map(csv);
 
