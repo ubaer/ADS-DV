@@ -7,9 +7,13 @@
 
 </head>
 
+<body>
 <div style="text-align: center" id="legend"></div>
 
 <div id="chart_placeholder"></div>
+
+</body>
+
 <script>
     /*
     var data = [
@@ -44,7 +48,6 @@
        }
 
 */
-    //    var parse = d3.time.format("%mm/%dd/%YYYY").parse;
 
     var colors = {
         'AUTO THEFT': '#4853e5',
@@ -67,8 +70,74 @@
         'LARCENY FROM AUTO'
     ];
 
+    const FONT_SIZE = 16; // in pixels
+    const TOOLTIP_WIDTH = 30; // in rem
+
+    // we're gonna create a tooltip per drop to prevent from transition issues
+    const showTooltip = (commit) => {
+        d3.select('body').selectAll('.tooltip').remove();
+
+        const tooltip = d3
+            .select('body')
+            .append('div')
+            .attr('class', 'tooltip')
+            .style('opacity', 0); // hide it by default
+
+        const t = d3.transition().duration(250).ease(d3.easeLinear);
+
+        tooltip
+            .transition(t)
+            .on('start', () => {
+                d3.select('.tooltip').style('display', 'block');
+            })
+            .style('opacity', 1);
+
+        const rightOrLeftLimit = FONT_SIZE * TOOLTIP_WIDTH;
+
+        const direction = d3.event.pageX > rightOrLeftLimit ? 'right' : 'left';
+
+        const ARROW_MARGIN = 1.65;
+        const ARROW_WIDTH = FONT_SIZE;
+        const left = direction === 'right'
+            ? d3.event.pageX - rightOrLeftLimit
+            : d3.event.pageX - ((ARROW_MARGIN * (FONT_SIZE - ARROW_WIDTH)) / 2);
+
+        tooltip.html(
+            `
+        <div class="commit">
+            <div class="content">
+                <h3 class="message">${commit.description}</h3>
+                <p>
+                    <a class="author">${commit.location}</a>
+                    on <span class="date">${commit.date}</span> -
+                    <a class="sha"> ${commit.weapon}</a>
+                </p>
+            </div>
+        </div>
+    `
+        );
+
+        tooltip
+            .style('left', `${left}px`)
+            .style('top', `${d3.event.pageY + 16}px`)
+            .classed(direction, true);
+    };
+
+    const hideTooltip = () => {
+        const t = d3.transition().duration(1000);
+
+        d3
+            .select('.tooltip')
+            .transition(t)
+            .on('end', function end() {
+                this.remove();
+            })
+            .style('opacity', 0);
+    };
+
+
     var data;
-    d3.csv("2017.csv", function (prices) {
+    d3.csv('2017.csv', function (prices) {
         var dict = {};
         data = prices.map(function (d) {
             return {
@@ -76,12 +145,13 @@
                 crimeTime: d.CrimeTime,
                 crimeCode: d.CrimeCode,
                 location: d.Location,
-                description: d.Description
+                description: d.Description,
+                weapon: d.Weapon
             };
         });
 
         data.forEach(function (record) {
-            if(unwanted.includes(record.description)) {
+            if (unwanted.includes(record.description)) {
                 return;
             }
             if (!dict.hasOwnProperty(record.description)) {
@@ -110,7 +180,8 @@
 
         eventDropsChart.start(new Date('2017/04/15 10:24:54'))
             .end(new Date('2017/04/15 13:45:05'))
-            .click((d) => listener(d))
+            .mouseover(showTooltip)
+            .mouseout(hideTooltip)
             .minScale(0.05)
             .maxScale(1000)
             .eventLineColor(function (e) {
@@ -120,5 +191,5 @@
         d3.select('#chart_placeholder')
             .datum(newDict)
             .call(eventDropsChart);
-    })
+    });
 </script>
