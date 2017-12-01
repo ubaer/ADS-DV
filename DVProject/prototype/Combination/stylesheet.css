@@ -1,0 +1,123 @@
+.zoom-area {
+    fill: transparent;
+    cursor: pointer;
+}
+body {
+    font: 10px sans-serif;
+    shape-rendering: crispEdges;
+}
+
+.day {
+    fill: #fff;
+    stroke: #ccc;
+}
+
+.month {
+    fill: none;
+    stroke: #000;
+    stroke-width: 2px;
+}
+
+.RdYlGn .q10-11{fill:rgb(165,0,38)}
+.RdYlGn .q9-11{fill:rgb(215,48,39)}
+.RdYlGn .q8-11{fill:rgb(244,109,67)}
+.RdYlGn .q7-11{fill:rgb(253,174,97)}
+.RdYlGn .q6-11{fill:rgb(254,224,139)}
+.RdYlGn .q5-11{fill:rgb(255,255,191)}
+.RdYlGn .q4-11{fill:rgb(217,239,139)}
+.RdYlGn .q3-11{fill:rgb(166,217,106)}
+.RdYlGn .q2-11{fill:rgb(102,189,99)}
+.RdYlGn .q1-11{fill:rgb(26,152,80)}
+.RdYlGn .q0-11{fill:rgb(0,104,55)}
+
+.y-tick {
+    stroke: black;
+    fill: none;
+    stroke-width: 1px;
+}
+
+.line-separator, .x-axis {
+    stroke: black;
+    fill: none;
+    stroke-width: 1px;
+}
+
+.line-separator:last-child {
+    display: none;
+}
+
+.x-axis {
+    position: absolute;
+    z-index: 50;
+}
+
+text {
+    stroke: none;
+    fill: black;
+}
+
+.graph-body .line {
+    height: 20px;
+    padding: 10px;
+}
+
+.tooltip {
+    position: absolute;
+    background: #fff;
+    border: 3px solid #e7e7e7;
+    border-radius: 1rem;
+    padding: .5rem 1rem;
+    width: 30rem;
+    line-height: 1.4rem;
+}
+
+.tooltip::before {
+    content: '';
+    display: block;
+    position: absolute;
+    top: -.65rem;
+    width: 1rem;
+    height: 1rem;
+    background: #fff;
+    border: 3px solid #e7e7e7;
+    border-width: 3px 0 0 3px;
+    transform: rotate(45deg);
+    z-index: 1;
+}
+
+.tooltip.left::before {
+    left: 1.65rem;
+}
+
+.tooltip.right::before {
+    right: 1.65rem;
+}
+
+.tooltip .commit {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.tooltip .avatar {
+    width: 5rem;
+    height: 5rem;
+    border-radius: .5rem;
+    margin-right: 1rem;
+    flex: 0 0 5rem;
+}
+
+.tooltip .content {
+    flex: 1 0 0;
+}
+
+.tooltip h3 {
+    font-size: 1rem;
+}
+
+.tooltip p {
+    font-size: .9rem;
+    color: #777;
+}

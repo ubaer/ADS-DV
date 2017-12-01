@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://d3js.org/d3.v3.js"></script>
+    <script>d3version3 = d3
+    window.d3 = null</script>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script>d3version4 = d3
+   </script>
+
+    <script src="https://unpkg.com/event-drops"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.2/moment.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="stylesheet.css">
+</head>
+<body>
+<div id="chart_placeholder"></div>
+
+</body>
+</html>
+
+<script>
+
+    var width = 960,
+        height = 136,
+        cellSize = 17;
+
+    var formatPercent = d3version3.format("");
+
+    var color = d3version3.scale.quantize()
+        .domain([20, 210])
+        .range(d3version3.range(11).map(function(d) { return "q" + d + "-11"; }));
+    //.range(["#006837", "#1a9850", "#66bd63", "#a6d96a", "#d9ef8b", "#ffffbf", "#fee08b", "#fdae61", "#f46d43", "#d73027", "#a50026"]);
+
+    var svg = d3version3.select("body").selectAll("svg")
+        .data(d3version3.range(2012, 2018))
+        .enter().append("svg")
+        .attr("width", width)
+        .attr("height", height)
+        .attr("class", "RdYlGn")
+        .append("g")
+        .attr("transform", "translate(" + ((width - cellSize * 53) / 2) + "," + (height - cellSize * 7 - 1) + ")");
+
+    svg.append("text")
+        .attr("transform", "translate(-6," + cellSize * 3.5 + ")rotate(-90)")
+        .style("text-anchor", "middle")
+        .text(function (d) {
+            return d;
+        });
+
+
+    var day = d3version3.time.format("%w");
+    var week = d3version3.time.format("%U");
+    var format = d3version3.time.format("%m/%d/%Y");
+
+    var rect = svg.selectAll(".day")
+        .data(function (d) {
+            return d3version3.time.days(new Date(d, 0, 1), new Date(d + 1, 0, 1));
+        })
+        .enter().append("rect")
+        .attr("class", "day")
+        .attr("width", cellSize)
+        .attr("height", cellSize)
+        .attr("x", function (d) {
+            return week(d) * cellSize;
+        })
+        .attr("y", function (d) {
+            return day(d) * cellSize;
+        })
+        .datum(format);
+
+    svg.selectAll(".month")
+        .data(function(d) { return d3version3.time.months(new Date(d, 0, 1), new Date(d + 1, 0, 1)); })
+        .enter().append("path")
+        .attr("class", "month")
+        .attr("d", pathMonth);
+
+    d3version3.csv("counted_dates.csv", function (error, csv) {
+        if (error) throw error;
+
+        var data = d3version3.nest()
+            .key(function (d) {
+                return d.date;
+            })
+            .rollup(function (d) {
+                return (d[0].incidents);
+            })
+            .map(csv);
+
+        rect.filter(function (d) {
+            return d in data;
+        })
+            .attr("fill", function (d) {
+                return color(data[d]);
+            })
+            .append("title")
+            .text(function (d) {
+                return d + ": " + formatPercent(data[d]);
+            })
+            .on('click', function (d) {
+                console.log('clicked', d)
+            })
+        ;
+
+
+        rect.filter(function (d) {
+            return d in data;
+        })
+            .attr("class", function (d) {
+                return "day " + color(data[d]);
+            })
+            .on('click', function (d) {
+                console.log('clicked', d)
+            })
+            .select("title");
+    });
+
+
+    function pathMonth(t0) {
+        var t1 = new Date(t0.getFullYear(), t0.getMonth() + 1, 0),
+            d0 = +day(t0), w0 = +week(t0),
+            d1 = +day(t1), w1 = +week(t1);
+        return "M" + (w0 + 1) * cellSize + "," + d0 * cellSize
+            + "H" + w0 * cellSize + "V" + 7 * cellSize
+            + "H" + w1 * cellSize + "V" + (d1 + 1) * cellSize
+            + "H" + (w1 + 1) * cellSize + "V" + 0
+            + "H" + (w0 + 1) * cellSize + "Z";
+    }
+
+</script>
+
+<script>
+    /*
+    var data = [
+        {
+            name: "Robbery",
+            data: [{date: new Date('2014/09/15 13:24:57')}, {date: new Date('2014/09/15 13:27:04')}, {date: new Date('2014/09/15 13:30:04')}],
+            color: "black"
+        },
+        {
+            name: "Assault",
+            data: [{date: new Date('2014/09/15 13:24:54')}, {date: new Date('2014/09/15 13:33:03')}, {date: new Date('2014/09/15 13:45:05')}],
+            color: "crimson"
+        },
+
+        {
+            name: "Larceny",
+            data: [{date: new Date('2014/09/15 13:20:57')}, {date: new Date('2014/09/15 13:22:57')}],
+            color: "purple"
+        },
+        {
+            name: "Shooting",
+            data: [{date: new Date('2014/09/15 13:50:57'), name: 'ajshdf'}, {date: new Date('2014/09/15 13:59:57'), name:'woeoeo'}],
+            color: "red"
+        }
+    ];
+*/
+
+    /* ditc = {
+        'Robbery': {
+        data: []
+        }
+       }
+
+*/
+
+    var colors = {
+        'AUTO THEFT': '#fadb74',
+        'LARCENY': '#f3bb5b',
+        'SHOOTING': '#f09f4a',
+        'COMMON ASSAULT': '#ee843c',
+        'AGG. ASSAULT': '#dd6a33',
+        'BURGLARY': '#b9522c',
+        'ROBBERY - STREET': '#964229',
+        'RAPE': '#73392c',
+        'HOMICIDE': '#53352f',
+    };
+
+    var unwanted = [
+        'ROBBERY - RESIDENCE',
+        'ARSON',
+        'ROBBERY - COMMERCIAL',
+        'ROBBERY - CARJACKING',
+        'ASSAULT BY THREAT',
+        'LARCENY FROM AUTO'
+    ];
+
+    const FONT_SIZE = 16; // in pixels
+    const TOOLTIP_WIDTH = 30; // in rem
+
+    // we're gonna create a tooltip per drop to prevent from transition issues
+    const showTooltip = (commit) => {
+        d3.select('body').selectAll('.tooltip').remove();
+
+        const tooltip = d3
+            .select('body')
+            .append('div')
+            .attr('class', 'tooltip')
+            .style('opacity', 0); // hide it by default
+
+        const t = d3.transition().duration(250).ease(d3.easeLinear);
+
+        tooltip
+            .transition(t)
+            .on('start', () => {
+                d3.select('.tooltip').style('display', 'block');
+            })
+            .style('opacity', 1);
+
+        const rightOrLeftLimit = FONT_SIZE * TOOLTIP_WIDTH;
+
+        const direction = d3.event.pageX > rightOrLeftLimit ? 'right' : 'left';
+
+        const ARROW_MARGIN = 1.65;
+        const ARROW_WIDTH = FONT_SIZE;
+        const left = direction === 'right'
+            ? d3.event.pageX - rightOrLeftLimit
+            : d3.event.pageX - ((ARROW_MARGIN * (FONT_SIZE - ARROW_WIDTH)) / 2);
+
+        tooltip.html(
+            `
+        <div class="commit">
+            <div class="content">
+                <h3 class="message">${commit.description}</h3>
+                <p>
+                    <a class="author">${commit.location}</a>
+                    on <span class="date">${commit.date}</span> -
+                    <a class="sha"> ${commit.weapon}</a>
+                </p>
+            </div>
+        </div>
+    `
+        );
+
+        tooltip
+            .style('left', `${left}px`)
+            .style('top', `${d3.event.pageY + 16}px`)
+            .classed(direction, true);
+    };
+
+    const hideTooltip = () => {
+        const t = d3.transition().duration(1000);
+
+        d3
+            .select('.tooltip')
+            .transition(t)
+            .on('end', function end() {
+                this.remove();
+            })
+            .style('opacity', 0);
+    };
+
+
+    var data;
+    d3.csv('2017.csv', function (prices) {
+        var dict = {};
+        data = prices.map(function (d) {
+            return {
+                date: moment(d.date + " " + d.CrimeTime, 'MM/DD/YYYY HH:mm:ss').toDate(),
+                crimeTime: d.CrimeTime,
+                crimeCode: d.CrimeCode,
+                location: d.Location,
+                description: d.Description,
+                weapon: d.Weapon
+            };
+        });
+
+        data.forEach(function (record) {
+            if (unwanted.includes(record.description)) {
+                return;
+            }
+            if (!dict.hasOwnProperty(record.description)) {
+                dict[record.description] = {
+                    data: []
+                };
+            }
+            dict[record.description].data.push(record);
+        });
+
+
+        var newDict = Object.entries(dict).map(function (entry) {
+            return {
+                name: entry[0],
+                data: entry[1].data,
+                color: colors[entry[0]]
+            };
+        });
+
+
+        var eventDropsChart = d3.chart.eventDrops();
+
+        function listener(d) {
+            console.log(d)
+        }
+
+        eventDropsChart.start(new Date('2017/04/15 10:24:54'))
+            .end(new Date('2017/04/15 13:45:05'))
+            .mouseover(showTooltip)
+            .mouseout(hideTooltip)
+            .minScale(0.05)
+            .maxScale(1000)
+            .eventLineColor(function (e) {
+                return e.color;
+            });
+
+        d3.select('#chart_placeholder')
+            .datum(newDict)
+            .call(eventDropsChart);
+    });
+</script>
