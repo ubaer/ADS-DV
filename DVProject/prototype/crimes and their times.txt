@@ -1,0 +1,9 @@
+        'AUTO THEFT': $15,000
+        'LARCENY': 15,000 - V
+        'SHOOTING': 10Y - 20Y
+        'COMMON ASSAULT': 2Y
+        'AGG. ASSAULT': 5Y
+        'BURGLARY': 5Y
+        'ROBBERY - STREET': 15Y - IV
+        'RAPE': LIFE
+         'HOMICIDE': LIFE
