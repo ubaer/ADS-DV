@@ -29,6 +29,17 @@ body {
 .RdYlGn .q2-11{fill:rgb(102,189,99)}
 .RdYlGn .q1-11{fill:rgb(26,152,80)}
 .RdYlGn .q0-11{fill:rgb(0,104,55)}
+.RdYlGn{
+
+}
+
+.jaboy{
+    width: 100px;
+    height:500px;
+    border-style: solid;
+    border-color: black;
+    position: absolute;
+}
 
 .y-tick {
     stroke: black;

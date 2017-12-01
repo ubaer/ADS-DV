@@ -7,6 +7,7 @@
     <script src="https://d3js.org/d3.v4.min.js"></script>
     <script>d3version4 = d3
    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
     <script src="https://unpkg.com/event-drops"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.2/moment.js"></script>
@@ -14,11 +15,11 @@
     <link rel="stylesheet" type="text/css" href="stylesheet.css">
 </head>
 <body>
+<h1 style="width: 50%; margin:auto; text-align: center">Want to visit Baltimore? Better watch out!</h1>
 <div id="chart_placeholder"></div>
-
+<div id="jaboy"></div>
 </body>
 </html>
-
 <script>
 
     var width = 960,
@@ -75,7 +76,7 @@
         .attr("class", "month")
         .attr("d", pathMonth);
 
-    d3version3.csv("counted_dates.csv", function (error, csv) {
+    d3version3.csv("data/counted_dates.csv", function (error, csv) {
         if (error) throw error;
 
         var data = d3version3.nest()
@@ -111,6 +112,7 @@
             })
             .on('click', function (d) {
                 console.log('clicked', d)
+                jeweetwhatsup(d);
             })
             .select("title");
     });
@@ -130,40 +132,6 @@
 </script>
 
 <script>
-    /*
-    var data = [
-        {
-            name: "Robbery",
-            data: [{date: new Date('2014/09/15 13:24:57')}, {date: new Date('2014/09/15 13:27:04')}, {date: new Date('2014/09/15 13:30:04')}],
-            color: "black"
-        },
-        {
-            name: "Assault",
-            data: [{date: new Date('2014/09/15 13:24:54')}, {date: new Date('2014/09/15 13:33:03')}, {date: new Date('2014/09/15 13:45:05')}],
-            color: "crimson"
-        },
-
-        {
-            name: "Larceny",
-            data: [{date: new Date('2014/09/15 13:20:57')}, {date: new Date('2014/09/15 13:22:57')}],
-            color: "purple"
-        },
-        {
-            name: "Shooting",
-            data: [{date: new Date('2014/09/15 13:50:57'), name: 'ajshdf'}, {date: new Date('2014/09/15 13:59:57'), name:'woeoeo'}],
-            color: "red"
-        }
-    ];
-*/
-
-    /* ditc = {
-        'Robbery': {
-        data: []
-        }
-       }
-
-*/
-
     var colors = {
         'AUTO THEFT': '#fadb74',
         'LARCENY': '#f3bb5b',
@@ -184,6 +152,7 @@
         'ASSAULT BY THREAT',
         'LARCENY FROM AUTO'
     ];
+
 
     const FONT_SIZE = 16; // in pixels
     const TOOLTIP_WIDTH = 30; // in rem
@@ -250,61 +219,67 @@
             .style('opacity', 0);
     };
 
+    function jeweetwhatsup(d) {
 
-    var data;
-    d3.csv('2017.csv', function (prices) {
-        var dict = {};
-        data = prices.map(function (d) {
-            return {
-                date: moment(d.date + " " + d.CrimeTime, 'MM/DD/YYYY HH:mm:ss').toDate(),
-                crimeTime: d.CrimeTime,
-                crimeCode: d.CrimeCode,
-                location: d.Location,
-                description: d.Description,
-                weapon: d.Weapon
-            };
-        });
+        var year = d.substring(6)
+        var month = d.substring(0,2)
 
-        data.forEach(function (record) {
-            if (unwanted.includes(record.description)) {
-                return;
-            }
-            if (!dict.hasOwnProperty(record.description)) {
-                dict[record.description] = {
-                    data: []
+        var data;
+        d3.csv('data/'+year+'/'+month+'.csv', function (prices) {
+            var dict = {};
+            data = prices.map(function (d) {
+                return {
+                    date: moment(d.date + " " + d.CrimeTime, 'MM/DD/YYYY HH:mm:ss').toDate(),
+                    crimeTime: d.CrimeTime,
+                    crimeCode: d.CrimeCode,
+                    location: d.Location,
+                    description: d.Description,
+                    weapon: d.Weapon
                 };
-            }
-            dict[record.description].data.push(record);
-        });
-
-
-        var newDict = Object.entries(dict).map(function (entry) {
-            return {
-                name: entry[0],
-                data: entry[1].data,
-                color: colors[entry[0]]
-            };
-        });
-
-
-        var eventDropsChart = d3.chart.eventDrops();
-
-        function listener(d) {
-            console.log(d)
-        }
-
-        eventDropsChart.start(new Date('2017/04/15 10:24:54'))
-            .end(new Date('2017/04/15 13:45:05'))
-            .mouseover(showTooltip)
-            .mouseout(hideTooltip)
-            .minScale(0.05)
-            .maxScale(1000)
-            .eventLineColor(function (e) {
-                return e.color;
             });
 
-        d3.select('#chart_placeholder')
-            .datum(newDict)
-            .call(eventDropsChart);
-    });
+            data.forEach(function (record) {
+                if (unwanted.includes(record.description)) {
+                    return;
+                }
+                if (!dict.hasOwnProperty(record.description)) {
+                    dict[record.description] = {
+                        data: []
+                    };
+                }
+                dict[record.description].data.push(record);
+            });
+
+
+            var newDict = Object.entries(dict).map(function (entry) {
+                return {
+                    name: entry[0],
+                    data: entry[1].data,
+                    color: colors[entry[0]]
+                };
+            });
+
+
+            var eventDropsChart = d3.chart.eventDrops();
+
+            function listener(d) {
+                console.log(d)
+            }
+
+            eventDropsChart.start(new Date(d+' 00:00:01'))
+                .end(new Date(d+' 23:59:59'))
+                .mouseover(showTooltip)
+                .mouseout(hideTooltip)
+                .minScale(1)
+                .maxScale(100)
+                .eventLineColor(function (e) {
+                    return e.color;
+                });
+
+            d3.select('#chart_placeholder')
+                .datum(newDict)
+                .call(eventDropsChart);
+        });
+
+    }
 </script>
