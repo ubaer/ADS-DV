@@ -26,5 +26,6 @@ Other people will probably have the same feeling as I have in that aspect which 
 #  Resources
 BPD Part 1 Victim Based Crime Data 
 https://data.baltimorecity.gov/Public-Safety/BPD-Part-1-Victim-Based-Crime-Data/wsfq-mvij
+<br>
 Maryland sentencing guidelines
 http://msccsp.org/Files/Guidelines/offensetable.pdf
