@@ -1,3 +1,8 @@
+
+.list-item{
+    font-size: 150%;
+}
+
 .zoom-area {
     fill: transparent;
     cursor: pointer;
@@ -31,14 +36,6 @@ body {
 .RdYlGn .q0-11{fill:rgb(0,104,55)}
 .RdYlGn{
 
-}
-
-.jaboy{
-    width: 100px;
-    height:500px;
-    border-style: solid;
-    border-color: black;
-    position: absolute;
 }
 
 .y-tick {
