@@ -10,18 +10,28 @@ This visualisation is all about the amount of crime that is committed on certain
 When you want more information about a specific part and day of a year you can do a deep dive on it.
 <br><br>
 The timeline of a selected period is filled with nine different types of crime, ranging from vehicle theft to murder. They are placed on a timeline in which you are able to freely scroll through.
-Within a time period you can see clusters of crimes committed, looking deeper into these clusters you can see exactly what happened for each individual indicent.
+Within a time period you can see clusters of crimes committed, looking deeper into these clusters you can see exactly what happened for each individual incident.
 <br><br>
 Clicking on an incident will give you as much information about it as there is available within in the data set.
+
+# Exploring and cleaning the data
+I did some exploring of the data in tableau. I found out that the time and date tell a lot about the crime rate in the city. Most crimes are committed in broad daylight and there is always a dip in the amount of time during the winter months.
+Because the dataset is so large I had to split it up to properly load it in javascript, I created my own python script for this.
+
 # Design
 In the first design of the timeline viewer I assigned the same color to every crime but I quickly saw that this has no value at all.
 I followed up by assigning colors to them randomly, even though the color now useful because it could be used to differentiate between crimes, it did still not have the meaning which I wanted it to have.
 To eventually give the colors real meaning I made a color scheme which goes from light to dark. The crimes are ranked by the amount of prison time you get.
+
+For the calendar view I choose to keep the colors ranging from green to red to indicate the amount of crimes committed.
+I had tried to also change them to the same color scheme as I used for the timeline viewer but it didn't make the message as clear that there are some periods which are safer to go to Baltimore than others.
+
 # Feedback
 One of the most important feedback points was about the 'why?'. Whats the use of this visualisation? That question made me look into the city of Baltimore, I found out that it has a bunch of reasons why people would visit the city.
 Then I thought about the fact that I would not want to visit a city that is so dangerous, but looking at certain times a year it's not bad at all. 
 Other people will probably have the same feeling as I have in that aspect which makes it a useful visualisation for people who want to visit Baltimore but are afraid of the dangers.
 <br><br>
+I received a suggestion to add an option to book a hotel for the selected date which I thought was very clever, this way you could even compare prices but unfortunately there aren't any free API's that lets you look at prices more than a month in advance 
 
 #  Resources
 BPD Part 1 Victim Based Crime Data 
