@@ -3,12 +3,16 @@
     font-size: 150%;
 }
 
+.col-lg-8 mx-auto{
+    font: 50px sans-serif;
+}
+
 .zoom-area {
     fill: transparent;
     cursor: pointer;
 }
 body {
-    font: 10px sans-serif;
+    font: 100% sans-serif;
     shape-rendering: crispEdges;
 }
 
